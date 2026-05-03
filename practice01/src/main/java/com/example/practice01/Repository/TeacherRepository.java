@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TeacherRepository extends MongoRepository<Teacher, ObjectId> {
-    Optional<Teacher> findBySubject(String subject);
+    Teacher findBySubject(String subject);
     void deleteBySubject(String subject);
 }

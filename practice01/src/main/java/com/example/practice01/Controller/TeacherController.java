@@ -37,19 +37,19 @@ public class TeacherController {
 
     @GetMapping("/{subject}")
     public ResponseEntity<?> findBySubject(@PathVariable String subject){
-        Optional<Teacher> s = teacherService.findBySubject(subject);
-        if(s.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else{
-            return new ResponseEntity<>(s,HttpStatus.FOUND);
-        }
+        Teacher t = teacherService.findBySubject(subject);
+       if(t == null){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       else{
+           return new ResponseEntity<>(t,HttpStatus.FOUND);
+       }
     }
 
     @DeleteMapping("/{subject}")
     public ResponseEntity<?> deleteBySubject(@PathVariable String subject){
-        Optional<Teacher> s = teacherService.findBySubject(subject);
-        if(s.isEmpty()){
+        Teacher t = teacherService.findBySubject(subject);
+        if(t == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else{

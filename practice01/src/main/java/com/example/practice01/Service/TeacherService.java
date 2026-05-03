@@ -25,7 +25,7 @@ public class TeacherService {
         return teacherRepository.findAll();
     }
 
-    public Optional<Teacher> findBySubject(String subject){
+    public Teacher findBySubject(String subject){
         return teacherRepository.findBySubject(subject);
     }
     public void deleteById(ObjectId id){

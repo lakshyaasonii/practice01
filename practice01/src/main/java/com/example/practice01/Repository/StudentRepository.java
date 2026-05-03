@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends MongoRepository<Student, ObjectId> {
-    Optional<Student> findByRollNo(int rollNo);
+    Student findByRollNo(int rollNo);
     void deleteByRollNo(int rollNo);
 }

@@ -1,6 +1,7 @@
 package com.example.practice01.Controller;
 
 import com.example.practice01.Entity.Student;
+import com.example.practice01.Entity.Teacher;
 import com.example.practice01.Service.StudentService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PostMapping
-    public ResponseEntity<?> createEntry(@RequestBody Student myEntry){
+    @PostMapping("/{subject}")
+    public ResponseEntity<?> saveEntry(@PathVariable String subject, @RequestBody Student myEntry){
         try{
-            studentService.saveEntry(myEntry); //agr same roll no pehle se hua toh DuplicateKeyException ayega
-            return new ResponseEntity<>(myEntry, HttpStatus.CREATED);
+            studentService.saveEntry(myEntry,subject);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -36,8 +37,8 @@ public class StudentController {
 
     @GetMapping("/{rollNo}")
     public ResponseEntity<?> findByRollNo(@PathVariable int rollNo){
-        Optional<Student> s = studentService.findByRollNo(rollNo);
-        if(s.isEmpty()){
+        Student s = studentService.findByRollNo(rollNo);
+        if(s == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else{
@@ -45,15 +46,13 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/{rollNo}")
-    public ResponseEntity<?> deleteByRollNo(@PathVariable int rollNo){
-        Optional<Student> s = studentService.findByRollNo(rollNo);
-        if(s.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else{
-            studentService.deleteByRollNo(rollNo);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
+    @DeleteMapping("/{rollNo}/{subject}")
+    public ResponseEntity<?> deleteByRollNo(@PathVariable int rollNo, @PathVariable String subject){
+       try{
+           studentService.deleteByRollNo(rollNo,subject);
+           return new ResponseEntity<>(HttpStatus.OK);
+       }catch(Exception e){
+           return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+       }
     }
 }
